@@ -1,0 +1,39 @@
+# Django
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+media/
+
+# Enviroment variables
+.env
+.env.local
+.env.production
+
+# Virtual Enviroment
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Coverage
+.coverage
+htmlcov/
+
+# Static files
+staticfiles/
+
+# Test files with sensitive data
+test_tokens.md
+*.tokens
