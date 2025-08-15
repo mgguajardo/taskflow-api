@@ -1,0 +1,53 @@
+# Archivos de Git
+.git
+.gitignore
+.github/
+
+# Entornos virtuales
+.venv/
+venv/
+env/
+.env
+
+# Cache de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.pytest_cache/
+
+# IDE y editores
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archivos de desarrollo
+README.md
+*.md
+.env.example
+
+# Archivos de testing
+pytest.ini
+test_*.py
+*_test.py
+
+# Logs
+*.log
+
+# Archivos temporales
+*.tmp
+*.temp
+
+# Base de datos local
+*.sqlite3
+db.sqlite3
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Node modules (si los hubiera)
+node_modules/
