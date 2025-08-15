@@ -1,12 +1,12 @@
-from django.shortcuts import render
-from rest_framework import generics, filters
 from django_filters.rest_framework import DjangoFilterBackend
-from .models import Task, Tag
-from .serializers import TaskSerializer, TagSerializer
-from .permissions import IsOwner
-from rest_framework.permissions import IsAuthenticated
-from drf_spectacular.utils import extend_schema, OpenApiParameter
 from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import OpenApiParameter, extend_schema
+from rest_framework import filters, generics
+from rest_framework.permissions import IsAuthenticated
+
+from .models import Tag, Task
+from .permissions import IsOwner
+from .serializers import TagSerializer, TaskSerializer
 
 
 # Vista para listar y crear tareas

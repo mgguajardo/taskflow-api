@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Task, Tag
+
+from .models import Tag, Task
 
 
 class TagSerializer(serializers.ModelSerializer):
