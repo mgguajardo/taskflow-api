@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from tasks.models import Task, Tag
+from tasks.models import Tag, Task
 
 
 @pytest.mark.django_db
@@ -64,7 +64,7 @@ class TestTaskCRUD:
         self.task.refresh_from_db()
         assert self.task.title == 'Titulo actualizado con PATCH'
         assert self.task.description == 'Descripcion original'
-        assert self.task.completed == False
+        assert self.task.completed
 
     def test_patch_task_multiple_fields(self):
         '''Test: actualizando multiples campos usando PATCH'''
@@ -77,8 +77,4 @@ class TestTaskCRUD:
     # DELETE TEST
     def test_delete_other_user_task_forbidden(self):
         '''Test: eliminar tarea exitosamente'''
-        pass
-
-    def test_delete_other_user_task_forbidden(self):
-        '''Test: no pudo eliminar tarea de otro usuario'''
         pass
