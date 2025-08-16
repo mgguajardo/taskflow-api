@@ -1,9 +1,7 @@
+import pytest
 from django.contrib.auth.models import User
-
 from rest_framework import status
 from rest_framework.test import APIClient
-
-import pytest
 
 from tasks.models import Tag, Task
 

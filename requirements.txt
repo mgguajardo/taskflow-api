@@ -24,3 +24,5 @@ tzdata==2025.2
 uritemplate==4.2.0
 pytest-cov>=4.0.0
 ruff>=0.1.0
+black>=25.1.0
+isort>=6.0.1
