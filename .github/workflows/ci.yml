@@ -1,0 +1,87 @@
+name: 🚀 TaskFlow API - CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Ejecutar tests nightly a las 2 AM UTC
+    - cron: '0 2 * * *'
+
+jobs:
+  test:
+    name: 🧪 Tests & Quality Checks
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.11, 3.12, 3.13]
+
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_PASSWORD: testpass
+          POSTGRES_USER: testuser
+          POSTGRES_DB: testdb
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+
+    - name: 🐍 Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: 📦 Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: 🔍 Run linting (ruff)
+      run: |
+        ruff check .
+        ruff format --check .
+
+    - name: 🧪 Run tests with coverage
+      env:
+        SECRET_KEY: test-secret-key-for-ci
+        POSTGRES_DB: testdb
+        POSTGRES_USER: testuser
+        POSTGRES_PASSWORD: testpass
+        POSTGRES_HOST: localhost
+        POSTGRES_PORT: 5432
+      run: |
+        python manage.py migrate
+        pytest --cov=tasks --cov=accounts --cov-report=xml --cov-report=term
+
+    - name: 📊 Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        fail_ci_if_error: true
+
+  docker:
+    name: 🐳 Docker Build Test
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+
+    - name: 🐳 Build Docker image
+      run: |
+        docker build -t taskflow-api:test .
+
+    - name: 🔍 Test Docker image
+      run: |
+        docker run --rm taskflow-api:test python manage.py check
