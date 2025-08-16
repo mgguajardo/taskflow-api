@@ -18,11 +18,11 @@ from dotenv import load_dotenv
 
 # Detectar si estamos ejecutando tests
 TESTING = (
-    'test' in sys.argv
-    or 'pytest' in sys.modules
-    or 'runserver' in sys.argv
-    or 'migrate' in sys.argv
-    or os.getenv('DJANGO_USE_SQLITE', False)
+    "test" in sys.argv
+    or "pytest" in sys.modules
+    or "runserver" in sys.argv
+    or "migrate" in sys.argv
+    or os.getenv("DJANGO_USE_SQLITE", False)
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -39,7 +39,7 @@ load_dotenv(os.path.join(BASE_DIR, ".env"))
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() == "true"
 
 ALLOWED_HOSTS = ["*"]  # Para Docker - permite todas las conexiones
 
@@ -96,9 +96,9 @@ WSGI_APPLICATION = "config.wsgi.application"
 if TESTING:
     # Configuracion para test: SQLite en memoria(super rapido)
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': ':memory:',
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": ":memory:",
         }
     }
 
