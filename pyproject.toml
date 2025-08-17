@@ -33,11 +33,41 @@ ignore = [
     "DJ001", # null=True on string-based fields
 ]
 
+
 [tool.ruff.lint.isort]
-known-django = ['django']
-known-first-party = ['task','accounts', 'config']
-section-order = ['future', 'standard-library','django','third-party','first-party','local-folder']
+known-first-party = ["tasks", "accounts", "config"]
+known-third-party = ["django", "rest_framework", "django_filters", "drf_spectacular"]
+section-order = [
+    "future",
+    "standard-library",
+    "third-party",
+    "first-party",
+    "local-folder"
+]
 
 [tool.ruff.format]
-quote-style = 'double'
+quote-style = "double"
 skip-magic-trailing-comma = false
+
+# Mantén las otras configuraciones si las necesitas
+[tool.black]
+target-version = ['py313']
+line-length = 88
+skip-string-normalization = true
+extend-exclude = '''
+/(
+    \.git
+  | \.venv
+  | migrations
+)/
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line-length = 88
+skip = ["migrations", ".venv"]
+known_django = ["django"]
+known_drf = ["rest_framework"]
+known_first_party = ["tasks", "accounts", "config"]
+sections = ["FUTURE", "STDLIB", "DJANGO", "DRF", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]

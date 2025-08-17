@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from tasks.models import Tag, Task
+from tasks.models import Task
 
 
 @pytest.mark.django_db
@@ -43,25 +43,25 @@ class TestTaskCRUD:
 
         # Datos para crear nueva tarea
         task_data = {
-            'title': 'Nueva tarea desde API',
-            'description': 'Descripcion de la nueva tarea',
-            'completed': False,
+            "title": "Nueva tarea desde API",
+            "description": "Descripcion de la nueva tarea",
+            "completed": False,
         }
 
         # Ejecutar POST
-        url = '/api/tasks/'
+        url = "/api/tasks/"
         response = self.client.post(url, task_data)
 
         # Verificaciones
         assert response.status_code == status.HTTP_201_CREATED
 
         # Verificar que la tarea se creo en DB
-        assert Task.objects.filter(title='Nueva tarea desde API').exists()
+        assert Task.objects.filter(title="Nueva tarea desde API").exists()
 
         # Verificar que pertenece al usuario correcto
-        created_task = Task.objects.get(title='Nueva tarea desde API')
+        created_task = Task.objects.get(title="Nueva tarea desde API")
         assert created_task.user == self.user1
-        assert created_task.description == 'Descripcion de la nueva tarea'
+        assert created_task.description == "Descripcion de la nueva tarea"
         assert not created_task.completed
 
     def test_get_task_detail(self):
@@ -70,7 +70,7 @@ class TestTaskCRUD:
         self.client.force_authenticate(user=self.user1)
 
         # Ejecutar GET a detalle de tarea
-        url = f'/api/tasks/{self.task.id}/'
+        url = f"/api/tasks/{self.task.id}/"
         response = self.client.get(url)
 
         # Verificar respuesta exitosa
@@ -78,10 +78,10 @@ class TestTaskCRUD:
 
         # Verificar datos en response
         response_data = response.json()
-        assert response_data['id'] == self.task.id
-        assert response_data['title'] == 'Tarea de prueba'
-        assert response_data['description'] == 'Descripcion original'
-        assert not response_data['completed']
+        assert response_data["id"] == self.task.id
+        assert response_data["title"] == "Tarea de prueba"
+        assert response_data["description"] == "Descripcion original"
+        assert not response_data["completed"]
 
     # UPDATE TEST (aqui va nuestro PATCH tests)
     def test_patch_task_title_only(self):
@@ -109,11 +109,11 @@ class TestTaskCRUD:
         self.client.force_authenticate(user=self.user1)
 
         # Preparar datos para PATC (multiples campos)
-        url = f'/api/tasks/{self.task.id}/'
+        url = f"/api/tasks/{self.task.id}/"
         patch_data = {
-            'title': 'Titulo actualizado multiple',
-            'description': 'Nueva descripcion actualizada',
-            'completed': True,
+            "title": "Titulo actualizado multiple",
+            "description": "Nueva descripcion actualizada",
+            "completed": True,
         }
 
         # Ejecutar PATC
@@ -124,7 +124,7 @@ class TestTaskCRUD:
 
         # Verificar que TODOS los campos cambiaron
         self.task.refresh_from_db()
-        assert self.task.title == 'Titulo actualizado multiple'
-        assert self.task.description == 'Nueva descripcion actualizada'
+        assert self.task.title == "Titulo actualizado multiple"
+        assert self.task.description == "Nueva descripcion actualizada"
         assert self.task.completed
         assert self.task.user == self.user1
