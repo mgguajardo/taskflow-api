@@ -17,15 +17,37 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import include, path
+from django.http import JsonResponse
 from drf_spectacular.views import (
     SpectacularAPIView,
     SpectacularRedocView,
     SpectacularSwaggerView,
 )
 
+# Healthcheck viw para Railwai
+def healthcheck(request):
+    return JsonResponse({'status':'healthy','message':'TaskFlow API is running'})
+
+# Vista raiz de la API
+def api_root(request):
+    return JsonResponse({
+        'message': 'TaskFlow API',
+        'version': '1.0',
+        'endpoints': {
+            'admin': '/admin/',
+            'api': '/api/',
+            'docs': '/api/docs/',
+            'tasks': '/api/tasks/',
+            'auth': '/api/auth/'
+        }
+    })
+
+
 urlpatterns = [
     path("admin/", admin.site.urls),
-    # API endpoint
+    path('', api_root, name='api_root'),
+    path('api/', api_root, name='api_root_api'),
+    path('health/', healthcheck, name='healthcheck'),
     path("api/auth/", include("accounts.urls")),
     path("api/", include("tasks.urls")),
     # Documentacion automatica
