@@ -99,7 +99,7 @@ cp .env.example .env  # Editar con configuración de tu BD
 # Ejecutar migraciones y servidor
 python manage.py migrate
 python manage.py runserver
-```
+
 
 ## 📋 **Referencia de API**
 
